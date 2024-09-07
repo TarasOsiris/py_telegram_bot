@@ -1,6 +1,9 @@
 ﻿"""
+A simple telegram bot that greets you back.
+
 See https://core.telegram.org/bots/api#getupdates
 """
+
 import os
 import time
 import requests
@@ -12,6 +15,7 @@ api_url = f"https://api.telegram.org/bot{telegram_token}/"
 def run_bot():
     offset = 0
 
+    # Process updates until the program is killed
     while True:
         response = requests.get(f"{api_url}getUpdates?offset={offset}")
         if response.status_code == 200:
@@ -31,7 +35,8 @@ def process_updates(updates):
     for update in updates:
         chat = update['message']['chat']
         username = chat['username']
-        requests.post(f"{api_url}sendMessage", json={"chat_id": chat["id"], "text": f"Welcome, {username}"})
+        request_body = {"chat_id": chat["id"], "text": f"Welcome, {username}"}
+        requests.post(f"{api_url}sendMessage", json=request_body)
         print(username)
 
 
